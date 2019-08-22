@@ -2,16 +2,8 @@
 
 This code uses libXML2 to read data from an XML file and place it into a C struct.
 
-This is essentially a copy of some very old (~2013) code that I wrote. It has at least
-one serious problem, namely, the alignment does not actually follow the C standard.
-This is because I wrote it by experimenting to figure out how it should be aligned.
-I now know that what I experimentally determined was wrong, but have not fixed
-it (yet).
-
-It has barely been tested since the last time it was worked on, and known not
-to work (likely on account of the alignment issue).
-
-Additionally, there are very few source code comments, it uses printf where it
+This is essentially a copy of some very old (~2013) code that I wrote.
+There are very few source code comments, it uses printf where it
 ought not to, and the code is overall quite messy and probably buggy.
 You have been warned.
 

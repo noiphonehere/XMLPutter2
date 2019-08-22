@@ -237,27 +237,28 @@ void DynamicStructure::addField(const char *name, FieldType type, unsigned int c
   t.count = count;
   t.offset = totalStructSize();
 
+  int alignment = 1;
+
   switch(type) {
   case INT:
   case SUBSTRUCTURE_COUNT:
     t.size = count*sizeof(int);
-    if(t.size%4) t.size += 4-t.size%4; //Align to 32-bit bounds
+    alignment = sizeof(int);
     break;
 
   case FLOAT:
     t.size = count*sizeof(float);
-    if(t.size%4) t.size += 4-t.size%4; //Align to 32-bit bounds
+    alignment = sizeof(float);
     break;
 
   case CHAR:
     t.size = count*sizeof(char);
-    if(t.size%4) t.size += 4-t.size%4; //Align to 32-bit bounds
+    alignment = sizeof(char);
     break;
 
   case SUBSTRUCTURE:
-    if(t.offset%sizeof(void*)) t.offset += sizeof(void*)-t.offset%sizeof(void*);
     t.size = sizeof(unsigned char*); //Want only one (for now)
-    if(t.size%4) t.size += 4-t.size%4; //Align to 32-bit bounds
+    alignment = sizeof(unsigned char*);
     t.pDynStruct = ds;
     printf("WARNING: Substructure is experimental!\n");
     break;
@@ -267,6 +268,11 @@ void DynamicStructure::addField(const char *name, FieldType type, unsigned int c
     t.size = count;
     break;
   }
+  
+  if(t.offset%alignment) {
+    t.offset += alignment - (t.offset%alignment);
+  }
+
   fields.push_back(t);
 }
 
